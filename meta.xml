@@ -1,0 +1,9 @@
+<meta>
+	<info name ="Dashboard" author="ALw7sH" version="1.0.0" type="script"/>
+		<!-- Client -->
+	<script src="client_main.lua" type="client" />
+	<script src="dxLib.lua" type="client" />
+	<script src="util_client.lua" type="client" />
+	<!-- Shaders -->
+	<file src="shaders/shader.fx" />
+</meta>
