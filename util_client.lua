@@ -34,3 +34,60 @@ function RGBToHex(red, green, blue, alpha)
 		return string.format("#%.2X%.2X%.2X", red,green,blue)
 	end
 end
+
+function updateGridlist(grid,thing)
+	if isElement(grid) and getElementType(grid) == "dxGridList" then
+		if thing == "news" then
+			local xml = xmlLoadFile("xml/News.xml")
+			for k,v in ipairs(xmlNodeGetChildren(xml)) do
+			local title = xmlNodeGetAttribute(v,"Title")
+			local by = xmlNodeGetAttribute(v,"By")
+			local datee = xmlNodeGetAttribute(v,"Date")
+			dxGridListAddRow(grid,title,by,datee)
+			end
+			xmlUnloadFile(xml)
+		elseif thing == "members" then
+			local xml = xmlLoadFile("xml/Memebers.xml")
+			for k,v in ipairs(xmlNodeGetChildren(xml)) do
+			local name = xmlNodeGetAttribute(v,"Name")
+			local country = xmlNodeGetAttribute(v,"Country")
+			local rank = xmlNodeGetAttribute(v,"Rank")
+			dxGridListAddRow(grid,name,country,rank)
+			end
+			xmlUnloadFile(xml)
+		elseif thing == "clanwars" then
+			local xml = xmlLoadFile("xml/Clanwars.xml")
+			for k,v in ipairs(xmlNodeGetChildren(xml)) do
+			local typee = xmlNodeGetAttribute(v,"Type")
+			local vs = xmlNodeGetAttribute(v,"Vs")
+			local score = xmlNodeGetAttribute(v,"Score")
+			local result = xmlNodeGetAttribute(v,"Result")
+			dxGridListAddRow(grid,typee,vs,score,result)
+			end
+			xmlUnloadFile(xml)
+		end
+	end
+end
+
+function getMaps(player)
+	if player and isElement(player) then
+	triggerServerEvent("Mapshop:clientWantMaps",localPlayer)
+	end
+end
+
+function setMapsGridList(mapsTable)
+	if mapsTable and type(mapsTable) == "table" then
+	dxGridListClear(maps)
+		for _,map in ipairs(mapsTable) do
+			dxGridListAddRow(maps,map)
+		end
+	end
+end
+addEvent("Mapshop:sendMapsToClient",true)
+addEventHandler("Mapshop:sendMapsToClient",root,setMapsGridList)
+
+addEventHandler("onClientResourceStart",resourceRoot,
+function()
+getMaps(localPlayer)
+end
+)
